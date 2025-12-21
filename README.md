@@ -1,7 +1,7 @@
 # Futu OpenD & moomoo OpenD
-![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/chasenlabs/futu-opend/main.yml)
-![GitHub Release Date](https://img.shields.io/github/release-date/chasenlabs/futu-opend)
-![GitHub Release](https://img.shields.io/github/v/release/chasenlabs/futu-opend?&color=fff)
+![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/chasenlab/futu-opend/main.yml)
+![GitHub Release Date](https://img.shields.io/github/release-date/chasenlab/futu-opend)
+![GitHub Release](https://img.shields.io/github/v/release/chasenlab/futu-opend?&color=fff)
 ![](https://img.shields.io/badge/futu-opend-ff6900.svg?logo=data:image/svg%2bxml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxOTYuNzIgMTk2LjcyIj48ZGVmcz48c3R5bGU+LmNscy0xe2ZpbGw6I2ZmZjt9LmNscy0ye2ZpbGw6IzMyMzQzOTt9LmNscy0ze2ZpbGw6I2ZmNjkwMDt9PC9zdHlsZT48L2RlZnM+PHRpdGxlPmljb24tbml1bml1LWVuX25ldzwvdGl0bGU+PGcgaWQ9ImxheWVyLTEiIGRhdGEtbmFtZT0ibGF5ZXItMSI+PGNpcmNsZSBjbGFzcz0iY2xzLTEiIGN4PSI5OC4zNiIgY3k9Ijk4LjM2IiByPSI5OC4zNiIvPjxwYXRoIGNsYXNzPSJjbHMtMyIgZD0iTTk4LjM2LDBBOTguMzEsOTguMzEsMCwwLDAsLjYyLDEwOS4zM0gzNi4wOEw1OCw3MS4zNCw0OS4xMSw2Ni4yYTIzLjIxLDIzLjIxLDAsMCwxLTQuNy0zNi42MWwxLjIxLTEuMkE2MC42NSw2MC42NSwwLDAsMSw5MS4zLDExbDIuNDkuMTItMiwuODlBNjAuNjUsNjAuNjUsMCwwLDAsNjcuMTgsMzEuNjFsLS4xNS4yMWE4Ljg1LDguODUsMCwwLDAsMy4wOSwxMi4zNWwyLjcsMS41NiwxMC41Myw2LjA4LDEzLjQxLDcuNzQsNDEuOTEsMjQuMmEyMy4yMywyMy4yMywwLDAsMSw4LjUxLDMxLjczbC0yOC43NCw0OS43OGEyMy4yMywyMy4yMywwLDAsMS0zMS43Myw4LjVsLTEyLjUzLTcuMjNhMjcuNTcsMjcuNTcsMCwwLDAsMTAuNDksMTAuODV2MGw0LjgsMi43OFYxOTYuM2MyLjk0LjI2LDUuOS40Miw4LjkuNDJBOTguMzYsOTguMzYsMCwwLDAsOTguMzYsMFptODYuNDgsMTExYTIzLjIsMjMuMiwwLDAsMS0zNCwxNGwtMy4yNS0xLjg3LDMuMi01LjUzQTI3LjM2LDI3LjM2LDAsMCwwLDE1MS4yNyw5MWw4LjE2LDQuNzFhOC44NSw4Ljg1LDAsMCwwLDEyLjI1LTMuNTJsLjItLjQ0YTYwLjY2LDYwLjY2LDAsMCwwLDQuNTMtMzEuODdsLS4xOS0xLjQ2LjgsMS4xOWE2MC42MSw2MC42MSwwLDAsMSw4LjIxLDQ5LjlaIi8+PGNpcmNsZSBjbGFzcz0iY2xzLTMiIGN4PSI4Mi44NyIgY3k9IjEwMy44NSIgcj0iMTQuMzUiIHRyYW5zZm9ybT0ibWF0cml4KDAuMDEsIC0xLCAxLCAwLjAxLCAtMjIuMDcsIDE4NS4zNCkiLz48L2c+PC9zdmc+Cg==&logoColor=ff6900)
 ![](https://img.shields.io/badge/moomoo-opend-ff6900.svg?logo=data:image/svg%2bxml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMDAgMTUzLjcyIj4KICAgIDxkZWZzPgogICAgICAgIDxzdHlsZT4uY2xzLTF7ZmlsbDojMjYyNzJiO30uY2xzLTJ7ZmlsbDojZmY2OTAwO308L3N0eWxlPgogICAgPC9kZWZzPgogICAgPGcgaWQ9ImxheWVyLTEiIGRhdGEtbmFtZT0ibGF5ZXItMSI+CiAgICAgICAgPHBhdGggY2xhc3M9ImNscy0yIiBkPSJNMi42NSwxNTMuNTdIMTQuNzhBMy4xLDMuMSwwLDAsMCwxNy41MSwxNTJsLjgxLTEuNDdhMjguNzYsMjguNzYsMCwwLDEsMjEtMTQuNTlsMi43OC0uNDFhNC40Miw0LjQyLDAsMCwwLDQuMDYtMi42OWw0MS4yLTk2LjlhMS42MiwxLjYyLDAsMCwwLTEuODEtMi4yM2wtMi4xOS40NUM1OS4xMyw0MCw0Mi43NSw1NS4xMiwzMS43Miw3NS44M0wzMS4xOSw3N2wtMzEsNzNBMi42NSwyLjY1LDAsMCwwLDIuNjUsMTUzLjU3WiIvPgogICAgICAgIDxwYXRoIGNsYXNzPSJjbHMtMiIgZD0iTTUwLjU1LDE1My43Mkg4MC4zMmwxLjYtLjg4LDUuMS04LjEyYzI1LjIxLTQwLjEsODQuNTMtMzUuNDIsMTAzLjQ3LDcuNTJhMi40OSwyLjQ5LDAsMCwwLDIuMzEsMS40OGgyMWEyLjY1LDIuNjUsMCwwLDAsMi42NC0yLjkxbC01LjU2LTU3YTEsMSwwLDAsMC0yLS4xN2wtNC44OSwxNy42NWEyLjYsMi42LDAsMCwxLTIuODYsMS44OGwtMzMtNC40NGE2Ljg1LDYuODUsMCwwLDEtNS4xMy00TDE1MS4zLDc4YTIuNywyLjcsMCwwLDEsMi44Ny0zLjc1bDE5LjU4LDIuNjFhMi44NywyLjg3LDAsMCwxLDIuMzEsMS44NmwzLjMzLDlhMSwxLDAsMCwwLDEuODItLjA3bDMuMjgtMTEuODNhMi41OSwyLjU5LDAsMCwwLTIuMTUtMy4yNmwtMzguNTEtNS4xNGMtMjcuNDktMy42OC0zMi40LTQxLjM2LTYuNzctNTJsNy4zMy0zYTEsMSwwLDAsMSwxLjI4LDEuNDZsLTYuMjQsMTAuNTVhMTQsMTQsMCwwLDAsMTAuMiwyMWw0My4xLDUuNzZhMTEuMywxMS4zLDAsMCwwLDExLjU5LTE2LjI4TDIwMywzMi4yOGMtMjIuNDMtNDQuNi04Ni44LTQyLjUzLTEwNi4zMywzLjQybC0xLjIxLDIuODZMNDguMTIsMTUwLjA1QTIuNjQsMi42NCwwLDAsMCw1MC41NSwxNTMuNzJaIi8+CiAgICAgICAgPHBhdGggY2xhc3M9ImNscy0yIiBkPSJNMjEzLjUsNzYuNzNsNC0uNjVhMjIuMzUsMjIuMzUsMCwwLDAsMTIuNzItMzcuM2wtNi45My03YTEuMDcsMS4wNywwLDAsMC0xLjc3LDEuMDlsMy4wNyw5YTEwLjY2LDEwLjY2LDAsMCwxLTUsMTNoMFoiLz4KICAgIDwvZz4KPC9zdmc+&logoColor=ff6900)
 
@@ -24,7 +24,7 @@ more parameters see [start with command](https://openapi.futunn.com/futu-api-doc
 
 ```shell
 # futu
-docker run -d --name opend -p 11111:11111 ghcr.io/chasenlabs/futu-opend:latest \
+docker run -d --name opend -p 11111:11111 ghcr.io/chasenlab/futu-opend:latest \
     /docker-entrypoint.sh \
     -login_account=<account number> \
     -login_pwd_md5=<md5 string> \
@@ -33,7 +33,7 @@ docker run -d --name opend -p 11111:11111 ghcr.io/chasenlabs/futu-opend:latest \
     -telnet_port=22222 \
     -lang=chs
 # moomoo
-docker run -d --name opend -p 11111:11111 ghcr.io/chasenlabs/moomoo-opend:latest \
+docker run -d --name opend -p 11111:11111 ghcr.io/chasenlab/moomoo-opend:latest \
     /docker-entrypoint.sh \
     -login_account=<account number> \
     -login_pwd_md5=<md5 string> \
@@ -81,7 +81,7 @@ input_phone_verify_code -code=<code>
 clone the repo
 
 ```shell
-git clone https://github.com/chasenlabs/opend.git
+git clone https://github.com/chasenlab/opend.git
 ```
 
 ```shell
