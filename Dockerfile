@@ -2,7 +2,7 @@ FROM ubuntu:22.04
 
 ARG BRAND=unspecified
 ARG DOMAIN=unspecified
-ARG BUILD_OPEND_VERSION=9.5.5508
+ARG BUILD_OPEND_VERSION=9.6.5608
 ARG OPEND_DIR=/opend
 ARG BIN_NAME=OpenD
 
@@ -10,13 +10,13 @@ ARG BIN_NAME=OpenD
 LABEL org.opencontainers.image.maintainer="ChasenLbas <chasen.space@gmail.com>"
 LABEL org.opencontainers.image.description="${BRAND} OpenD Docker Image"
 
-# xxxx_OpenD_9.5.5508_Ubuntu18.04.tar.gz
+# xxxx_OpenD_9.5.5608_Ubuntu18.04.tar.gz
 ARG OPEND_PREFIX=${BRAND}_OpenD_${BUILD_OPEND_VERSION}_Ubuntu18.04
 ARG OPEND_FILE=${OPEND_PREFIX}.tar.gz
 
 # Download OpenD package
-# https://softwaredownload.futunn.com/Futu_OpenD_9.5.5508_Ubuntu18.04.tar.gz
-# https://softwaredownload.futustatic.com/moomoo_OpenD_9.5.5508_Ubuntu18.04.tar.gz
+# https://softwaredownload.futunn.com/Futu_OpenD_9.5.5608_Ubuntu18.04.tar.gz
+# https://softwaredownload.futustatic.com/moomoo_OpenD_9.5.5608_Ubuntu18.04.tar.gz
 ARG OPEND_URL=https://softwaredownload.${DOMAIN}/${OPEND_FILE}
 
 ENV OPEND_VERSION  ${BUILD_OPEND_VERSION}
