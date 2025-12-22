@@ -24,7 +24,7 @@ more parameters see [start with command](https://openapi.futunn.com/futu-api-doc
 
 ```shell
 # futu
-docker run -d --name opend -p 11111:11111 ghcr.io/chasenlabs/futu-opend:latest \
+docker run -d --name opend -p 11111:11111 ghcr.io/chasenlab/futu-opend:latest \
     /docker-entrypoint.sh \
     -login_account=<account number> \
     -login_pwd_md5=<md5 string> \
@@ -33,7 +33,7 @@ docker run -d --name opend -p 11111:11111 ghcr.io/chasenlabs/futu-opend:latest \
     -telnet_port=22222 \
     -lang=chs
 # moomoo
-docker run -d --name opend -p 11111:11111 ghcr.io/chasenlabs/moomoo-opend:latest \
+docker run -d --name opend -p 11111:11111 ghcr.io/chasenlab/moomoo-opend:latest \
     /docker-entrypoint.sh \
     -login_account=<account number> \
     -login_pwd_md5=<md5 string> \
@@ -81,7 +81,7 @@ input_phone_verify_code -code=<code>
 clone the repo
 
 ```shell
-git clone https://github.com/chasenlabs/opend.git
+git clone https://github.com/chasenlab/opend.git
 ```
 
 ```shell

@@ -62,7 +62,7 @@ jobs:
           uses: docker/metadata-action@v4
           with:
             images: |
-              ghcr.io/chasenlabs/futu-opend
+              ghcr.io/chasenlab/futu-opend
             tags: |
               type=ref,event=branch
               type=ref,event=pr
@@ -110,7 +110,7 @@ jobs:
           uses: docker/metadata-action@v4
           with:
             images: |
-              ghcr.io/chasenlabs/moomoo-opend
+              ghcr.io/chasenlab/moomoo-opend
             tags: |
               type=ref,event=branch
               type=ref,event=pr

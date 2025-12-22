@@ -1,8 +1,8 @@
 
 services:
   opend:
-    image: ghcr.io/chasenlabs/futu-opend:latest
-    #image: ghcr.io/chasenlabs/moomoo-opend:latest # moomoo
+    image: ghcr.io/chasenlab/futu-opend:latest
+    #image: ghcr.io/chasenlab/moomoo-opend:latest # moomoo
     container_name: futu-opend
     restart: unless-stopped
     ports:
