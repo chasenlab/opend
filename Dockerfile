@@ -3,7 +3,6 @@ FROM ubuntu:22.04
 ARG BRAND=unspecified
 ARG DOMAIN=unspecified
 ARG BUILD_OPEND_VERSION=9.6.5608
-
 ARG OPEND_DIR=/opend
 ARG BIN_NAME=OpenD
 
