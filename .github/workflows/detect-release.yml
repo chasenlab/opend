@@ -21,7 +21,7 @@ jobs:
         run: |
           make version >> $GITHUB_OUTPUT
 
-      - name: Commit and Create PR
+      - name: Commit, Create PR, and Auto-merge
         if: ${{ steps.detect.outputs.version != 'no-update' }}
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -35,4 +35,13 @@ jobs:
           git commit -m "(≧ω≦): upgrade OpenD version to ${version}"
           git checkout -b $Branch
           git push --set-upstream origin $Branch
-          gh pr create --base master --fill
+          pr_url=$(gh pr create --base master --fill)
+          pr_number=${pr_url##*/}
+          pr_author=$(gh api "repos/${GITHUB_REPOSITORY}/pulls/${pr_number}" --jq '.user.login')
+          if [[ "$pr_author" != "github-actions[bot]" ]]; then
+            echo "Refusing to auto-merge PR created by $pr_author"
+            exit 1
+          fi
+          GH_TOKEN="${{ secrets.PAT_TOKEN }}" gh pr merge "$pr_url" \
+            --squash \
+            --delete-branch
