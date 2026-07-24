@@ -25,30 +25,133 @@ jobs:
         run: |
           make version >> $GITHUB_OUTPUT
 
-      - name: Commit, Create PR, and Auto-merge
+      - name: Validate merge credentials
+        id: merge-credentials
+        if: ${{ steps.detect.outputs.version != 'no-update' }}
+        env:
+          GH_TOKEN: ${{ secrets.PAT_TOKEN }}
+        run: |
+          set -euo pipefail
+          merge_actor=$(gh api user --jq '.login')
+          can_push=$(gh api "repos/${GITHUB_REPOSITORY}" --jq '.permissions.push')
+          if [[ "$can_push" != "true" ]]; then
+            echo "Merge actor $merge_actor cannot write to $GITHUB_REPOSITORY"
+            exit 1
+          fi
+          echo "actor=$merge_actor" >> "$GITHUB_OUTPUT"
+
+      - name: Commit and Create PR
+        id: pr
         if: ${{ steps.detect.outputs.version != 'no-update' }}
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          VERSION: ${{ steps.detect.outputs.version }}
         run: |
-          version=${{ steps.detect.outputs.version }}
-          echo "detect version=${version}"
-          Branch=topic/detect/release-$(uuidgen)
+          set -euo pipefail
+
+          if [[ ! "$VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            echo "Refusing invalid detected version: $VERSION"
+            exit 1
+          fi
+
+          source_version=$(git show HEAD:Dockerfile | sed -nE 's/^ARG BUILD_OPEND_VERSION=([0-9]+\.[0-9]+\.[0-9]+)$/\1/p')
+          if [[ ! "$source_version" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]] ||
+             [[ "$source_version" == "$VERSION" ]]; then
+            echo "Refusing invalid version transition: $source_version -> $VERSION"
+            exit 1
+          fi
+
+          expected_file=$(mktemp)
+          source_version_pattern=${source_version//./\\.}
+          git show HEAD:Dockerfile | sed "s/${source_version_pattern}/${VERSION}/g" > "$expected_file"
+
+          changed_files=$(git diff --name-only)
+          if [[ "$changed_files" != "Dockerfile" ]] || ! cmp -s "$expected_file" Dockerfile; then
+            echo "Refusing unexpected release changes: $changed_files"
+            rm -f "$expected_file"
+            exit 1
+          fi
+          rm -f "$expected_file"
+
+          branch=topic/detect/release-$(uuidgen)
+          title="(≧ω≦): upgrade OpenD version to ${VERSION}"
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git add Dockerfile
-          changed_files=$(git diff --cached --name-only)
-          if [[ "$changed_files" != "Dockerfile" ]]; then
-            echo "Refusing to auto-merge unexpected changes: $changed_files"
+          git commit -m "$title"
+          git checkout -b "$branch"
+          git push --set-upstream origin "$branch"
+
+          head_sha=$(git rev-parse HEAD)
+          pr_url=$(gh pr create \
+            --base master \
+            --head "$branch" \
+            --title "$title" \
+            --body "Automated OpenD release update to ${VERSION}.")
+
+          {
+            echo "url=$pr_url"
+            echo "branch=$branch"
+            echo "head_sha=$head_sha"
+            echo "title=$title"
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Validate automated PR
+        if: ${{ steps.detect.outputs.version != 'no-update' }}
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR_URL: ${{ steps.pr.outputs.url }}
+          EXPECTED_BRANCH: ${{ steps.pr.outputs.branch }}
+          EXPECTED_HEAD_SHA: ${{ steps.pr.outputs.head_sha }}
+          EXPECTED_TITLE: ${{ steps.pr.outputs.title }}
+        run: |
+          set -euo pipefail
+
+          assert_equal() {
+            local field="$1"
+            local actual="$2"
+            local expected="$3"
+            if [[ "$actual" != "$expected" ]]; then
+              echo "PR validation failed for $field: expected '$expected', got '$actual'"
+              exit 1
+            fi
+          }
+
+          pr_number="${PR_URL##*/}"
+          pr_json=$(gh api "repos/${GITHUB_REPOSITORY}/pulls/${pr_number}")
+
+          assert_equal "state" "$(jq -r '.state' <<< "$pr_json")" "open"
+          assert_equal "draft" "$(jq -r '.draft' <<< "$pr_json")" "false"
+          assert_equal "author" "$(jq -r '.user.login' <<< "$pr_json")" "github-actions[bot]"
+          assert_equal "source repository" "$(jq -r '.head.repo.full_name' <<< "$pr_json")" "$GITHUB_REPOSITORY"
+          assert_equal "head branch" "$(jq -r '.head.ref' <<< "$pr_json")" "$EXPECTED_BRANCH"
+          assert_equal "base branch" "$(jq -r '.base.ref' <<< "$pr_json")" "master"
+          assert_equal "head commit" "$(jq -r '.head.sha' <<< "$pr_json")" "$EXPECTED_HEAD_SHA"
+          assert_equal "title" "$(jq -r '.title' <<< "$pr_json")" "$EXPECTED_TITLE"
+          assert_equal "commit count" "$(jq -r '.commits' <<< "$pr_json")" "1"
+          assert_equal "changed file count" "$(jq -r '.changed_files' <<< "$pr_json")" "1"
+
+          pr_files=$(gh api "repos/${GITHUB_REPOSITORY}/pulls/${pr_number}/files" \
+            --paginate \
+            --jq '.[].filename')
+          assert_equal "changed files" "$pr_files" "Dockerfile"
+
+      - name: Auto-merge validated PR
+        if: ${{ success() && steps.detect.outputs.version != 'no-update' }}
+        env:
+          GH_TOKEN: ${{ secrets.PAT_TOKEN }}
+          PR_URL: ${{ steps.pr.outputs.url }}
+          EXPECTED_HEAD_SHA: ${{ steps.pr.outputs.head_sha }}
+          EXPECTED_MERGE_ACTOR: ${{ steps.merge-credentials.outputs.actor }}
+        run: |
+          set -euo pipefail
+          merge_actor=$(gh api user --jq '.login')
+          if [[ "$merge_actor" != "$EXPECTED_MERGE_ACTOR" ]]; then
+            echo "Merge actor changed: expected $EXPECTED_MERGE_ACTOR, got $merge_actor"
             exit 1
           fi
-          git commit -m "(≧ω≦): upgrade OpenD version to ${version}"
-          git checkout -b $Branch
-          git push --set-upstream origin $Branch
-          head_sha=$(git rev-parse HEAD)
-          pr_url=$(gh pr create --base master --fill)
-
-          # The PAT lets the merge event trigger the tag and release workflows.
-          GH_TOKEN="${{ secrets.PAT_TOKEN }}" gh pr merge "$pr_url" \
+          echo "Merging validated release PR as $merge_actor"
+          gh pr merge "$PR_URL" \
             --squash \
             --delete-branch \
-            --match-head-commit "$head_sha"
+            --match-head-commit "$EXPECTED_HEAD_SHA"
