@@ -6,6 +6,10 @@ on:
 
   workflow_dispatch:
 
+concurrency:
+  group: detect-release
+  cancel-in-progress: false
+
 jobs:
   detect:
     runs-on: ubuntu-latest
@@ -21,7 +25,7 @@ jobs:
         run: |
           make version >> $GITHUB_OUTPUT
 
-      - name: Commit and Create PR
+      - name: Commit, Create PR, and Auto-merge
         if: ${{ steps.detect.outputs.version != 'no-update' }}
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -32,7 +36,19 @@ jobs:
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git add Dockerfile
+          changed_files=$(git diff --cached --name-only)
+          if [[ "$changed_files" != "Dockerfile" ]]; then
+            echo "Refusing to auto-merge unexpected changes: $changed_files"
+            exit 1
+          fi
           git commit -m "(≧ω≦): upgrade OpenD version to ${version}"
           git checkout -b $Branch
           git push --set-upstream origin $Branch
-          gh pr create --base master --fill
+          head_sha=$(git rev-parse HEAD)
+          pr_url=$(gh pr create --base master --fill)
+
+          # The PAT lets the merge event trigger the tag and release workflows.
+          GH_TOKEN="${{ secrets.PAT_TOKEN }}" gh pr merge "$pr_url" \
+            --squash \
+            --delete-branch \
+            --match-head-commit "$head_sha"
