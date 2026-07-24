@@ -11,12 +11,7 @@ jobs:
   hook:
     name: 'Create Tag'
     runs-on: ubuntu-latest
-    if: >-
-      github.event_name == 'pull_request' &&
-      github.event.pull_request.merged == true &&
-      github.event.pull_request.user.login == 'github-actions[bot]' &&
-      startsWith(github.event.pull_request.head.ref, 'topic/detect/release-') &&
-      github.event.pull_request.base.ref == 'master'
+    if: github.event.pull_request.merged == true
     steps:
       - uses: actions/checkout@v4
         with:
@@ -24,26 +19,19 @@ jobs:
 
       # get version from pull request title
       - id: parse
-        env:
-          PR_TITLE: ${{ github.event.pull_request.title }}
         run: |
-          Version="${PR_TITLE##* }"
-          if [[ ! "$Version" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]] ||
-             [[ "$PR_TITLE" != "(≧ω≦): upgrade OpenD version to ${Version}" ]]; then
-            echo "Invalid automated release PR title: $PR_TITLE"
-            exit 1
-          fi
+          commit_message="${{ github.event.pull_request.title }}"
+          Version="${commit_message##*[[:space:]]}" # remove all characters before the last space
+          [[ "$commit_message" =~ ([0-9]+\.[0-9]+\.[0-9]+) ]] && Version="${BASH_REMATCH[1]}" || Version=""
           echo "version=${Version}"
-          echo "version=${Version}" >> "$GITHUB_OUTPUT"
+          echo "version=${Version}" >> $GITHUB_OUTPUT 
 
       - name: Create Tag
         if: ${{ steps.parse.outputs.version != '' }}
-        env:
-          VERSION: ${{ steps.parse.outputs.version }}
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git tag -a "v${VERSION}" -m "Upgrade to v${VERSION}"
+          git tag -a v${{ steps.parse.outputs.version }} -m "Upgrade to v${{ steps.parse.outputs.version }}"
 
       - name: Push changes
         uses: ad-m/github-push-action@master
