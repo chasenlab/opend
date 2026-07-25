@@ -84,21 +84,37 @@ clone the repo
 git clone https://github.com/chasenlab/opend.git
 ```
 
+The published images support `linux/amd64` and `linux/arm64`. Futu currently
+only provides an x86-64 OpenD binary, so the ARM64 image runs OpenD through
+QEMU user-mode emulation and may be slower than the AMD64 image.
+
 ```shell
 # futu
-docker build \ 
+docker buildx build \
+  --platform linux/amd64,linux/arm64 \
   --build-arg BRAND=Futu \
   --build-arg DOMAIN=futunn.com \
   --build-arg BIN_NAME=FutuOpenD \
-  -t futu-opend \ 
+  -t futu-opend \
   -f Dockerfile .
 
 # moomoo
-docker build \ 
+docker buildx build \
+  --platform linux/amd64,linux/arm64 \
   --build-arg BRAND=moomoo \
   --build-arg DOMAIN=futustatic.com \
-  -t futu-opend \ 
+  -t moomoo-opend \
   -f Dockerfile .
+```
+
+Use a single platform with `--load` when building an image for local use:
+
+```shell
+docker buildx build --platform linux/arm64 --load \
+  --build-arg BRAND=Futu \
+  --build-arg DOMAIN=futunn.com \
+  --build-arg BIN_NAME=FutuOpenD \
+  -t futu-opend:arm64 .
 ```
 
 ## Testing
