@@ -15,15 +15,15 @@
 
 ---
 
-使用 Docker 运行 [富途 OpenD](https://openapi.futunn.com/futu-api-doc/zh/opend/opend-intro.html) 或 moomoo OpenD，并通过自动化流程检查上游版本更新。
+使用 Docker 运行 [富途 OpenD](https://openapi.futunn.com/futu-api-doc/opend/opend-intro.html) 或 moomoo OpenD，并通过自动化流程检查上游版本更新。
 
 本项目不是富途或 moomoo 官方项目。使用本项目造成的任何问题由使用者自行承担。
 
 ## 文档
 
-- [富途 OpenAPI 中文文档](https://openapi.futunn.com/futu-api-doc/zh/)
-- [命令行 OpenD（中文）](https://openapi.futunn.com/futu-api-doc/zh/opend/opend-cmd.html)
-- [操作命令（中文）](https://openapi.futunn.com/futu-api-doc/zh/opend/opend-operate.html)
+- [富途 OpenAPI 中文文档](https://openapi.futunn.com/futu-api-doc/)
+- [命令行 OpenD（中文）](https://openapi.futunn.com/futu-api-doc/opend/opend-cmd.html)
+- [操作命令（中文）](https://openapi.futunn.com/futu-api-doc/opend/opend-operate.html)
 
 ## 快速开始
 
@@ -120,7 +120,7 @@ moomoo 镜像使用不同的状态目录：
 
 ### 输入手机验证码
 
-OpenD 启动后，可以通过 Telnet 运维端口发送操作命令。官方操作命令说明见[中文文档](https://openapi.futunn.com/futu-api-doc/zh/opend/opend-operate.html)和[英文文档](https://openapi.futunn.com/futu-api-doc/en/opend/opend-operate.html)。
+OpenD 启动后，可以通过 Telnet 运维端口发送操作命令。官方操作命令说明见[中文文档](https://openapi.futunn.com/futu-api-doc/opend/opend-operate.html)和[英文文档](https://openapi.futunn.com/futu-api-doc/en/opend/opend-operate.html)。
 
 ```shell
 docker exec -it opend bash

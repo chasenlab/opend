@@ -24,7 +24,7 @@ This project is not affiliated with or officially supported by Futu or moomoo. U
 - [Futu OpenAPI English documentation](https://openapi.futunn.com/futu-api-doc/en/)
 - [Command Line OpenD](https://openapi.futunn.com/futu-api-doc/en/opend/opend-cmd.html)
 - [Operation Command](https://openapi.futunn.com/futu-api-doc/en/opend/opend-operate.html)
-- [Chinese documentation](https://openapi.futunn.com/futu-api-doc/zh/)
+- [Chinese documentation](https://openapi.futunn.com/futu-api-doc/)
 
 ## Quick Start
 
