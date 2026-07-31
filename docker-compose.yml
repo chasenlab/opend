@@ -1,16 +1,20 @@
 
 services:
   opend:
-    image: ghcr.io/chasenlab/futu-opend:latest
+    image: ghcr.io/chasenlab/futu-opend:10.9
     #image: ghcr.io/chasenlab/moomoo-opend:latest # moomoo
-    container_name: futu-opend
+    container_name: opend
     restart: unless-stopped
     ports:
       - 11111:11111
     # https://openapi.futunn.com/futu-api-doc/opend/opend-cmd.html#8799
     volumes:
       - ./FutuOpenD.xml:/opend/FutuOpenD.xml
-#      - ./OpenD.xml:/opend/OpenD.xml # moomoo
+      # 持久化设备登录状态，避免容器重启后重复手机验证
+      # Persist device login state to avoid repeating mobile verification after restarts
+      - opend-state:/root/.com.futunn.FutuOpenD/F3CNN
+    #      - ./OpenD.xml:/opend/OpenD.xml # moomoo
+    #      - opend-state:/root/.com.moomoo.OpenD/F3CNN # moomoo 状态目录与 Futu 不同，切换镜像时同步切换配置和状态目录；moomoo uses a different state directory, so switch the config and state directory together
 #   or https://openapi.futunn.com/futu-api-doc/opend/opend-cmd.html#465
 #    command:
 #      - /docker-entrypoint.sh
@@ -20,3 +24,6 @@ services:
 #      - -api_ip=0.0.0.0
 #      - -telnet_port=22222
 #      - -lang=en
+
+volumes:
+  opend-state:
