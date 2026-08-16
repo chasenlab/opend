@@ -14,6 +14,11 @@ Location=$(echo "${Response}" | grep -i '^location:' | cut -d ' ' -f2-)
 Version=$(echo "$Location" | grep -o 'Futu_OpenD_[0-9]*\.[0-9]*\.[0-9]*' | sed 's/Futu_OpenD_//')
 SourceVersion=$(cat Dockerfile | grep 'ARG BUILD_OPEND_VERSION' | cut -d '=' -f2)
 
+if [ -z "$Version" ]; then
+  echo "Failed to detect OpenD version" >&2
+  exit 1
+fi
+
 if [ "$Version" != "$SourceVersion" ]; then # need to update
   echo "version=$Version"
   sed -i -e "s/$SourceVersion/${Version}/g" Dockerfile
