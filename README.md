@@ -21,6 +21,10 @@
 
 ## 文档
 
+> [!IMPORTANT]
+> 富途 OpenD v10.10.7008 版本更新包含配置变更, xml 配置文件中`login_account` `login_pwd` `login_pwd_md5` 被废弃[富途 OpenD 文档](https://openapi.futunn.com/futu-api-doc/opend/opend-cmd.html)，确认配置和启动参数仍然适用。
+> 如果无法使用请使用`10.9.6918`
+
 - [富途 OpenAPI 中文文档](https://openapi.futunn.com/futu-api-doc/)
 - [命令行 OpenD（中文）](https://openapi.futunn.com/futu-api-doc/opend/opend-cmd.html)
 - [操作命令（中文）](https://openapi.futunn.com/futu-api-doc/opend/opend-operate.html)
@@ -42,7 +46,7 @@ docker run -d \
   ghcr.io/chasenlab/futu-opend:latest \
   /docker-entrypoint.sh \
   -login_account=<account number> \
-  -login_pwd_md5=<md5 string> \
+  -login_by_remember=1 \
   -api_port=11111 \
   -api_ip=0.0.0.0 \
   -telnet_port=22222 \

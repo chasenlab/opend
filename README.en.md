@@ -21,6 +21,9 @@ This project is not affiliated with or officially supported by Futu or moomoo. U
 
 ## Documentation
 
+> [!IMPORTANT]
+> The Futu OpenD v10.10.7008 release includes configuration changes. The `login_account`, `login_pwd`, and `login_pwd_md5` fields in the XML configuration are deprecated. See the [Futu OpenD documentation](https://openapi.futunn.com/futu-api-doc/en/opend/opend-cmd.html) to confirm that your configuration and startup parameters are still supported.
+
 - [Futu OpenAPI English documentation](https://openapi.futunn.com/futu-api-doc/en/)
 - [Command Line OpenD](https://openapi.futunn.com/futu-api-doc/en/opend/opend-cmd.html)
 - [Operation Command](https://openapi.futunn.com/futu-api-doc/en/opend/opend-operate.html)
@@ -43,7 +46,7 @@ docker run -d \
   ghcr.io/chasenlab/futu-opend:latest \
   /docker-entrypoint.sh \
   -login_account=<account number> \
-  -login_pwd_md5=<md5 string> \
+  -login_by_remember=1 \
   -api_port=11111 \
   -api_ip=0.0.0.0 \
   -telnet_port=22222 \
